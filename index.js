@@ -126,7 +126,8 @@ io.on('connection', (socket) => {
                     game.gameState = 'finished';
                     const winner = determineWinner(game);
                     io.to(game.id).emit('gameOver', {
-                        winner: winner,
+                        winnerId: winner.id,
+                        winnerName: winner.name,
                         finalScores: game.scores
                     });
                 }
