@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Cricket</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Homepage Screen -->
+    <div id="homepage" class="screen active">
+        <h1>Hand Cricket</h1>
+        <div class="input-container">
+            <input type="text" id="playerName" placeholder="Enter your name" maxlength="20" aria-label="Enter your name">
+            <button onclick="joinGame()" class="primary-btn" aria-label="Join Game">Join Game</button>
+        </div>
+    </div>
+
+    <!-- Lobby Screen -->
+    <div id="lobby" class="screen">
+        <h2>Game Lobby</h2>
+        <div class="lobby-content">
+            <div id="waitingMessage" class="status-message">Waiting for another player to join...</div>
+            <div class="loader"></div>
+            <div id="playersList" class="players-list"></div>
+        </div>
+    </div>
+
+    <!-- Toss Screen -->
+    <div id="toss" class="screen">
+        <h2>Toss Time!</h2>
+        <div class="toss-container">
+            <div id="coinAnimation">
+                <div class="coin" aria-label="Coin Flip Animation"></div>
+            </div>
+            <div id="tossResult" class="toss-result"></div>
+            <div id="battingChoice" class="choice-container hidden">
+<h3>What would you like to do?</h3>
+                <div class="choice-buttons">
+                    <button onclick="chooseBatting('bat')" class="choice-btn" aria-label="Choose to Bat">Bat First</button>
+                    <button onclick="chooseBatting('bowl')" class="choice-btn" aria-label="Choose to Bowl">Bowl First</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Game Screen -->
+    <div id="game" class="screen">
+        <div class="game-container">
+            <!-- Scoreboard -->
+            <div class="scoreboard">
+                <div class="score-card">
+                    <div class="player-info">
+                        <span id="player1Name">Player 1</span>
+                        <span class="player-role" id="player1Role">(Batting)</span>
+                    </div>
+                    <div class="score" id="player1Score">0</div>
+                </div>
+                <div class="score-divider">VS</div>
+                <div class="score-card">
+                    <div class="player-info">
+                        <span id="player2Name">Player 2</span>
+                        <span class="player-role" id="player2Role">(Bowling)</span>
+                    </div>
+                    <div class="score" id="player2Score">0</div>
+                </div>
+            </div>
+
+            <!-- Game Status -->
+            <div class="status-section">
+                <div class="current-status">
+                    <p>Your Choice: <span id="currentChoice">-</span></p>
+                    <p>Opponent: <span id="opponentStatus">Waiting...</span></p>
+                </div>
+                <div id="gameStatus" class="game-status"></div>
+                <div id="inningsStatus" class="innings-status"></div>
+            </div>
+
+            <!-- Number Buttons -->
+            <div class="number-buttons">
+                <button onclick="selectNumber(1)" class="number-btn" aria-label="Choose 1">1</button>
+                <button onclick="selectNumber(2)" class="number-btn" aria-label="Choose 2">2</button>
+                <button onclick="selectNumber(3)" class="number-btn" aria-label="Choose 3">3</button>
+                <button onclick="selectNumber(4)" class="number-btn" aria-label="Choose 4">4</button>
+                <button onclick="selectNumber(5)" class="number-btn" aria-label="Choose 5">5</button>
+                <button onclick="selectNumber(6)" class="number-btn" aria-label="Choose 6">6</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOver" class="screen">
+        <h2>Game Over!</h2>
+        <div id="gameResult" class="game-result"></div>
+<div id="finalScores" class="final-scores"></div>
+        <button onclick="location.reload()" class="primary-btn" aria-label="Play Again">Play Again</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
