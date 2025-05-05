@@ -142,9 +142,6 @@ socket.on('gameStart', ({ players }) => {
     document.getElementById('player2Name').textContent = gameState.opponent.name;
 
     showScreen('toss');
-    // Start coin animation
-    const coin = document.querySelector('.coin');
-    coin.classList.add('flipping');
 });
 
 socket.on('tossResult', ({ winnerId, winnerName }) => {
@@ -174,8 +171,8 @@ socket.on('gameReady', ({ batsman, bowler, batsmanName, bowlerName }) => {
 
     updateScoreboard({ player1: 0, player2: 0 }, roles);
     updateGameStatus(currentPlayer.isBatting ? 
-        "You're batting! Choose a number." : 
-        "You're bowling! Choose a number."
+        "" : 
+        ""
     );
     updateInningsStatus();
 });
@@ -191,7 +188,21 @@ socket.on('scoreUpdate', ({ scores, batsmanChoice, bowlerChoice, batsman }) => {
         player2: currentPlayer.id === batsman ? scores[gameState.opponent.id] : scores[batsman]
     }, roles);
 
-    showToast(`Batsman: ${batsmanChoice}, Bowler: ${bowlerChoice} | +${batsmanChoice} runs`);
+    // Show turn result prominently
+    const turnResult = document.getElementById('turnResult');
+    if (batsmanChoice === bowlerChoice) {
+        turnResult.textContent = `OUT! Both chose ${batsmanChoice}`;
+        turnResult.style.color = 'var(--error-color)';
+    } else {
+        turnResult.textContent = `Batsman: ${batsmanChoice} | Bowler: ${bowlerChoice} | +${batsmanChoice} runs`;
+        turnResult.style.color = 'var(--accent-color)';
+    }
+
+    // Clear after 3 seconds
+    setTimeout(() => {
+        turnResult.textContent = '';
+    }, 2000);
+
     resetNumberButtons();
 });
 
@@ -210,13 +221,20 @@ socket.on('inningsChange', ({ scores, newBatsman, newBowler }) => {
         player2: currentPlayer.id === newBowler ? 0 : scores[newBowler]
     }, roles);
 
-    updateGameStatus(`2nd Innings - Target: ${gameState.targetScore} runs`);
+    updateGameStatus(``);
     updateInningsStatus();
     resetNumberButtons();
 });
 
 socket.on('wicket', ({ batsmanChoice }) => {
-    showToast(`OUT! Both chose ${batsmanChoice}`, true);
+    const turnResult = document.getElementById('turnResult');
+    turnResult.textContent = `OUT! Both chose ${batsmanChoice}`;
+    turnResult.style.color = 'var(--error-color)';
+
+    setTimeout(() => {
+        turnResult.textContent = '';
+    }, 3000);
+
     if (gameState.inningsNumber === 1) {
         updateGameStatus("Innings Complete!");
     }
@@ -225,11 +243,16 @@ socket.on('wicket', ({ batsmanChoice }) => {
 
 socket.on('gameOver', ({ winnerName, isDraw }) => {
     gameState.gameOver = true;
+    showScreen('gameOver');
 
     const message = isDraw ? 
         "It's a draw!" : 
         `${winnerName} wins the game!`;
 
-    updateGameStatus(message);
-    showToast(message);
+    document.getElementById('gameResult').textContent = message;
+    document.getElementById('finalScores').textContent = 
+        `Final Scores: ${currentPlayer.name} - ${currentPlayer.score} | ${gameState.opponent.name} - ${gameState.opponent.score}`;
 });
+
+// Event Listeners
+document.addEventListener('keypress', handleKeyPress);
