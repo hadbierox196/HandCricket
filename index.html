@@ -36,7 +36,7 @@
             </div>
             <div id="tossResult" class="toss-result"></div>
             <div id="battingChoice" class="choice-container hidden">
-<h3>What would you like to do?</h3>
+                <h3>What would you like to do?</h3>
                 <div class="choice-buttons">
                     <button onclick="chooseBatting('bat')" class="choice-btn" aria-label="Choose to Bat">Bat First</button>
                     <button onclick="chooseBatting('bowl')" class="choice-btn" aria-label="Choose to Bowl">Bowl First</button>
@@ -67,6 +67,9 @@
                 </div>
             </div>
 
+            <!-- Turn Result -->
+            <div id="turnResult" class="turn-result"></div>
+
             <!-- Game Status -->
             <div class="status-section">
                 <div class="current-status">
@@ -93,7 +96,7 @@
     <div id="gameOver" class="screen">
         <h2>Game Over!</h2>
         <div id="gameResult" class="game-result"></div>
-<div id="finalScores" class="final-scores"></div>
+        <div id="finalScores" class="final-scores"></div>
         <button onclick="location.reload()" class="primary-btn" aria-label="Play Again">Play Again</button>
     </div>
 
